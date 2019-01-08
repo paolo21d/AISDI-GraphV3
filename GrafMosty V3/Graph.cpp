@@ -4,8 +4,13 @@
 #include <vector>
 #include <stack>
 #include <fstream>
+#include <string>
 
 using namespace std;
+
+/*bool Graph::delFunc(const unsigned &d) {
+	return d==removeElement;
+}*/
 
 Graph::Graph() {
 	vertex = 0;
@@ -61,6 +66,12 @@ bool Graph::inputGraphFromFile(string src) {
 	return true;
 }
 
+void Graph::inputGraphLab(){
+	string src;
+	cin >> src;
+	inputGraphFromFile(src);
+}
+
 bool Graph::checkConnectivity() {
 	vector<bool>visited;
 	unsigned v, u, vc = 0;
@@ -92,7 +103,7 @@ void Graph::getBridges() {
 	unsigned delV1, delV2;
 	list<unsigned> delEdges1, delEdges2;
 	list<unsigned> *pointerV1, *pointerV2;
-	int cn;
+	int cn; //ilosc skladowych grafu
 	for (int i = 0; i < edge; ++i) {
 		delV1 = edges[i].first;
 		delV2 = edges[i].second;
@@ -102,7 +113,7 @@ void Graph::getBridges() {
 		pointerV1 = &adjList[delV1];
 		pointerV2 = &adjList[delV2];
 		//usuwam krawedzie od wierzcholka 1
-		//pointerV1->erase(pointerV1->begin(), pointerV1->end());
+		//removeElement = delV1;
 		pointerV1->clear();
 		for (auto it = delEdges1.begin(); it != delEdges1.end(); ++it) { //usun kolejne krawedzie dochodzace do wierzcholka 1
 			for (auto del = adjList[*it].begin(); del != adjList[*it].end(); ++del) {
@@ -111,10 +122,12 @@ void Graph::getBridges() {
 					break;
 				}
 			}
+			//adjList[*it].remove_if(delFunc);
 		}
 
 		//usuwam krawedzie od wierzcholka 2
 		pointerV2->clear();
+		//removeElement = delV1;
 		for (auto it = delEdges2.begin(); it != delEdges2.end(); ++it) { //usun kolejne krawedzie dochodzace do wierzcholka 2
 			for (auto del = adjList[*it].begin(); del != adjList[*it].end(); ++del) {
 				if (*del == delV2) {
@@ -122,6 +135,7 @@ void Graph::getBridges() {
 					break;
 				}
 			}
+			//adjList[*it].remove_if(delFunc);
 		}
 		//cout << "######Usuwam krawedz: " << delV1 << " " << delV2 << endl;
 		//printGraph();
@@ -149,16 +163,16 @@ void Graph::getBridges() {
 int Graph::getQuantityOfComponents() {
 	int cn = 0;                    // Zerujemy licznik spójnych sk³adowych
 	unsigned v, u;
-	vector<unsigned> visited;
+	vector<bool> visited;
 	stack<unsigned> S;
-	for (unsigned i = 0; i < vertex; ++i) visited.push_back(0); //zerowanie
+	for (unsigned i = 0; i < vertex; ++i) visited.push_back(false); //zerowanie listy odwiedzonych wierzcholkow
 
 	for (unsigned i = 0; i < vertex; ++i)
 		if (!visited[i])                // Szukamy nieodwiedzonego jeszcze wierzcho³ka
 		{
 			cn++;                  // Zwiêkszamy licznik sk³adowych
 			S.push(i);             // Na stosie umieszczamy numer bie¿¹cego wierzcho³ka
-			visited[i] = cn;             // i oznaczamy go jako odwiedzonego i ponumerowanego
+			visited[i] = true;             // i oznaczamy go jako odwiedzonego i ponumerowanego
 			while (!S.empty())      // Przechodzimy graf algorytmem DFS
 			{
 				v = S.top();         // Pobieramy wierzcho³ek
@@ -168,7 +182,7 @@ int Graph::getQuantityOfComponents() {
 					u = *it;
 					if (!visited[u]) {
 						S.push(u);
-						visited[u] = cn;
+						visited[u] = true;
 					}
 				}
 			}
