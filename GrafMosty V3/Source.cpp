@@ -5,8 +5,8 @@
 using namespace std;
 int main() {
 	Graph g;
-	//g.inputGraphFromFile("graf1.txt");
-	g.inputGraphLab();
+	g.inputGraphFromFile("graf1.txt");
+	//g.inputGraphLab();
 	g.printGraph();
 	//cout << "Spojnosc: " << g.checkConnectivity();
 	//cout << "Ilosc skladowych: " << g.getQuantityOfComponents() << endl;
