@@ -26,7 +26,7 @@ Graph::~Graph() {
 
 void Graph::inputGraph() {
 	cin >> vertex >> edge;
-	adjList = new list<unsigned>[vertex]; //zaalokowanie pamiêci na listê s¹siedztwa
+	adjList = new list<unsigned>[vertex]; //zaalokowanie pamiï¿½ci na listï¿½ sï¿½siedztwa
 	unsigned v1, v2;
 	for (unsigned i = 0; i < edge; ++i) { //wczytanie krawedzi do list sasiedztwa
 		cin >> v1 >> v2;
@@ -35,7 +35,7 @@ void Graph::inputGraph() {
 		edges.push_back(make_pair(v1, v2));
 	}
 
-	/*for (unsigned i = 0; i < vertex; ++i) { //posortowanie list s¹siedztwa
+	/*for (unsigned i = 0; i < vertex; ++i) { //posortowanie list sï¿½siedztwa
 		sort(adjList[i].begin(), adjList[i].end());
 	}*/
 }
@@ -47,7 +47,7 @@ bool Graph::inputGraphFromFile(string src) {
 		return false;
 
 	file >> vertex;
-	adjList = new list<unsigned>[vertex]; //zaalokowanie pamiêci na listê s¹siedztwa
+	adjList = new list<unsigned>[vertex]; //zaalokowanie pamiï¿½ci na listï¿½ sï¿½siedztwa
 	unsigned v1, v2;
 	while (file.good()) {
 		file >> v1 >> v2;
@@ -58,7 +58,7 @@ bool Graph::inputGraphFromFile(string src) {
 		edges.push_back(make_pair(v1, v2));
 	}
 
-	/*for (unsigned i = 0; i < vertex; ++i) { //posortowanie list s¹siedztwa
+	/*for (unsigned i = 0; i < vertex; ++i) { //posortowanie list sï¿½siedztwa
 		sort(adjList[i].begin(), adjList[i].end());
 	}*/
 
@@ -67,9 +67,18 @@ bool Graph::inputGraphFromFile(string src) {
 }
 
 void Graph::inputGraphLab(){
-	string src;
-	cin >> src;
-	inputGraphFromFile(src);
+	cin >> vertex;
+	adjList = new list<unsigned>[vertex]; //zaalokowanie pamiï¿½ci na listï¿½ sï¿½siedztwa
+	unsigned v1, v2;
+	unsigned e=0;
+	while(!cin.eof()){
+		cin >>v1 >> v2;
+		adjList[v1].push_back(v2);
+		adjList[v2].push_back(v1);
+		edges.push_back(make_pair(v1, v2));
+		++e;
+	}
+	edge=e;
 }
 
 bool Graph::checkConnectivity() {
@@ -161,23 +170,23 @@ void Graph::getBridges() {
 }
 
 int Graph::getQuantityOfComponents() {
-	int cn = 0;                    // Zerujemy licznik spójnych sk³adowych
+	int cn = 0;                    // Zerujemy licznik spï¿½jnych skï¿½adowych
 	unsigned v, u;
 	vector<bool> visited;
 	stack<unsigned> S;
 	for (unsigned i = 0; i < vertex; ++i) visited.push_back(false); //zerowanie listy odwiedzonych wierzcholkow
 
 	for (unsigned i = 0; i < vertex; ++i)
-		if (!visited[i])                // Szukamy nieodwiedzonego jeszcze wierzcho³ka
+		if (!visited[i])                // Szukamy nieodwiedzonego jeszcze wierzchoï¿½ka
 		{
-			cn++;                  // Zwiêkszamy licznik sk³adowych
-			S.push(i);             // Na stosie umieszczamy numer bie¿¹cego wierzcho³ka
+			cn++;                  // Zwiï¿½kszamy licznik skï¿½adowych
+			S.push(i);             // Na stosie umieszczamy numer bieï¿½ï¿½cego wierzchoï¿½ka
 			visited[i] = true;             // i oznaczamy go jako odwiedzonego i ponumerowanego
 			while (!S.empty())      // Przechodzimy graf algorytmem DFS
 			{
-				v = S.top();         // Pobieramy wierzcho³ek
+				v = S.top();         // Pobieramy wierzchoï¿½ek
 				S.pop();             // Usuwamy go ze stosu
-									 // Przegl¹damy s¹siadów wierzcho³ka v
+									 // Przeglï¿½damy sï¿½siadï¿½w wierzchoï¿½ka v
 				for (auto it = adjList[v].begin(); it != adjList[v].end(); ++it) {
 					u = *it;
 					if (!visited[u]) {

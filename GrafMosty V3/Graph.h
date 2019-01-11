@@ -4,11 +4,12 @@
 #include <vector>
 #include <list>
 #include <utility>
+#include <string>
 class Graph
 {
 	unsigned vertex; //ilosc wierzcholkow
 	unsigned edge; //ilosc krawedzi
-	//std::vector<unsigned> *adjList; //lista s¹siedztwa
+	//std::vector<unsigned> *adjList; //lista sï¿½siedztwa
 	std::list<unsigned> *adjList;
 	std::vector<std::pair<unsigned, unsigned>> edges;
 
